@@ -1,1 +1,6 @@
 /MeetUpApi/Properties/
+MeetUpApi/appsettings.json
+MeetUpApi/app.db
+MeetUpApi/app.db-shm
+MeetUpApi/app.db-wal
+.idea
