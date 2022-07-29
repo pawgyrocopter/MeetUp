@@ -1,4 +1,5 @@
-﻿using API.Helpers;
+﻿using System.Threading.Tasks;
+using API.Helpers;
 using MeetupAPI.DTOs;
 using MeetupAPI.Entities;
 using MeetupAPI.Helpers;

@@ -1,4 +1,6 @@
-﻿namespace MeetupAPI.Entities;
+﻿using System.Collections.Generic;
+
+namespace MeetupAPI.Entities;
 
 public class User
 {

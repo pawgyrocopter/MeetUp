@@ -1,4 +1,6 @@
-﻿namespace MeetupAPI.Data;
+﻿using System.Threading.Tasks;
+
+namespace MeetupAPI.Data;
 
 public class IBaseRepository
 {

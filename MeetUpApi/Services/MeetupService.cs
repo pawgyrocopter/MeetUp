@@ -1,4 +1,8 @@
-﻿using API.Helpers;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using API.Helpers;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MeetupAPI.Data;
@@ -32,7 +36,8 @@ public class MeetupService : IMeetupService
         {
             Name = meetupRegistrationDto.Name,
             CreationDate = DateTime.Now,
-            UsersRegistred = new List<User>()
+            UsersRegistred = new List<User>(),
+            PlannedTime = DateTime.Parse(meetupRegistrationDto.PlannedTime)
         };
         return _mapper.Map<MeetupDTO>( await _meetupRepository.CreateMeetup(meetup));
     }
@@ -45,7 +50,7 @@ public class MeetupService : IMeetupService
         
         //order by switch expression start
         
-        
+
         //order by end
         
         return await PagedList<MeetupDTO>.CreateAsync(

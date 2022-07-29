@@ -1,4 +1,6 @@
-﻿using MeetupAPI.Data;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using MeetupAPI.Data;
 using MeetupAPI.DTOs;
 using MeetupAPI.Entities;
 using MeetupAPI.Interfaces;
