@@ -4,3 +4,5 @@ MeetUpApi/app.db
 MeetUpApi/app.db-shm
 MeetUpApi/app.db-wal
 .idea
+MeetUpApi/bin
+MeetUpApi/obj
