@@ -22,6 +22,7 @@ public static class ApplicationServiceExtensions
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IMeetupRepository, MeetupRepository>();
         services.AddScoped<IMeetupService, MeetupService>();
+        services.AddScoped<IUserRepository, UserRepository>();
         return services;
     }
 }

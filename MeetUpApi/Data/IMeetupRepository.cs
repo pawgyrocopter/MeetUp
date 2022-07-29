@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MeetupAPI.DTOs;
 using MeetupAPI.Entities;
 
 namespace MeetupAPI.Data;
@@ -12,5 +13,6 @@ public interface IMeetupRepository
     Task<Meetup> GetMeetupById(int id);
 
     Task<IQueryable<Meetup>> GetMeetups();
-    Task<bool> Complete();
+
+    Task<bool> RegisterUserForMeetup(Meetup meetup, User user);
 }

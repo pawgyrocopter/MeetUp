@@ -1,6 +1,8 @@
 ﻿
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -12,6 +14,7 @@ using MeetupAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace MeetupAPI.Controllers;
 
@@ -38,8 +41,16 @@ public class MeetupController : BaseApiController
     [HttpGet("{id}")]
     public async Task<ActionResult<MeetupDTO>> GetMeetupById(int id)
     {
-        if (id > _context.Meetups.Count()) return NoContent();
-        return await _meetupService.GetMeetupById(id);
+        MeetupDTO meetup;
+        try
+        {
+            meetup = await _meetupService.GetMeetupById(id);
+        }
+        catch
+        {
+            return NoContent();
+        }
+        return meetup;
     }
 
     [HttpPost]
@@ -48,13 +59,21 @@ public class MeetupController : BaseApiController
         return await _meetupService.CreateMeetup(meetupRegistrationDto);
     }
 
+    [Authorize]
     [HttpPost("{id}/register", Name = "register")]
-    public async Task<MeetupDTO> RegisterForMeetup(int id)
+    public async Task<ActionResult> RegisterForMeetup(int id)
     {
-        var meetup = _context.Meetups.Include(x => x.UsersRegistred).FirstOrDefault(x => x.Id == id);
-        var user = _context.Users.FirstOrDefault(x => x.UserName.Equals(HttpContext.User.Identity.Name));
-        meetup.UsersRegistred.Add(user);
-        await _context.SaveChangesAsync();
-        return _mapper.Map<MeetupDTO>(meetup);
+        try
+        {
+            await _meetupService.RegisterForMeetup(id, int.Parse(HttpContext.User.Claims
+                .Where(x => x.Type == ClaimTypes.NameIdentifier)
+                .FirstOrDefault()?.Value));
+        }
+        catch
+        {
+            return BadRequest();
+        }
+
+        return Ok("Successfully registered to a meetup");
     }
 }

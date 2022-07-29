@@ -30,14 +30,15 @@ public class MeetupRepository : IMeetupRepository
 
     public async Task<Meetup> GetMeetupById(int id)
     {
-        return await _context.Meetups.FirstOrDefaultAsync(x => x.Id == id);
+        return await _context.Meetups.Include(x => x.UsersRegistred).FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<bool> Complete()
+    public async Task<bool> RegisterUserForMeetup(Meetup meetup, User user)
     {
+        meetup.UsersRegistred.Add(user);
         return await _context.SaveChangesAsync() > 0;
     }
-
+    
     public async Task<IEnumerable<Meetup>> GetAllMeetups()
     {
         return _context.Meetups;

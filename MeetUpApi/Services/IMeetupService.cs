@@ -12,4 +12,6 @@ public interface IMeetupService
     Task<MeetupDTO> CreateMeetup(MeetupRegistrationDto meetupRegistrationDto);
 
     Task<PagedList<MeetupDTO>> GetMeetups(MeetupsFilterParams meetupsFilterParams);
+
+    Task<bool> RegisterForMeetup(int meetupId, int userId);
 }
