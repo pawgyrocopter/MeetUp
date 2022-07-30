@@ -15,4 +15,7 @@ public interface IMeetupRepository
     Task<IQueryable<Meetup>> GetMeetups();
 
     Task<bool> RegisterUserForMeetup(Meetup meetup, User user);
+
+    Task<bool> UpdateMeetup(Meetup meetup);
+    Task<bool> DeleteMeetup(int meetupId);
 }

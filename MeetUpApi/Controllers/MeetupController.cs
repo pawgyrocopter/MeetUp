@@ -53,21 +53,20 @@ public class MeetupController : BaseApiController
         return meetup;
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<MeetupDTO> CreateMeetup([FromBody] MeetupRegistrationDto meetupRegistrationDto)
     {
-        return await _meetupService.CreateMeetup(meetupRegistrationDto);
+        return await _meetupService.CreateMeetup(meetupRegistrationDto, GetUserId());
     }
 
     [Authorize]
-    [HttpPost("{id}/register", Name = "register")]
-    public async Task<ActionResult> RegisterForMeetup(int id)
+    [HttpPost("{meetupId}/register", Name = "register")]
+    public async Task<ActionResult> RegisterForMeetup(int meetupId)
     {
         try
         {
-            await _meetupService.RegisterForMeetup(id, int.Parse(HttpContext.User.Claims
-                .Where(x => x.Type == ClaimTypes.NameIdentifier)
-                .FirstOrDefault()?.Value));
+            await _meetupService.RegisterForMeetup(meetupId, GetUserId());
         }
         catch
         {
@@ -75,5 +74,53 @@ public class MeetupController : BaseApiController
         }
 
         return Ok("Successfully registered to a meetup");
+    }
+
+    [Authorize]
+    [HttpPut("{meetupId}")]
+    public async Task<ActionResult<MeetupDTO>> UpdateMeetup(int meetupId,[FromBody]MeetupRegistrationDto meetupRegistrationDto)
+    {
+        MeetupDTO meetupDto;
+        try
+        {
+            meetupDto = await _meetupService.UpdateMeetup(meetupId, meetupRegistrationDto, GetUserId());
+        }
+        catch (DbUpdateException dbUpdateException)
+        {
+            return BadRequest("Couldn't update meetup");
+        }
+        catch
+        {
+            return Unauthorized("You are not the owner of meetup");
+        }
+
+        return meetupDto;
+    }
+
+    [Authorize]
+    [HttpDelete("{meetupId}")]
+    public async Task<ActionResult> DeleteMeetup(int meetupId)
+    {
+        try
+        {
+            await _meetupService.DeleteMeetup(meetupId, GetUserId());
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Unauthorized("You are not the owner");
+        }
+        catch
+        {
+            return BadRequest("Couldn't delete meetup");
+        }
+
+        return Ok();
+    }
+    [NonAction]
+    public int GetUserId()
+    {
+        return int.Parse(HttpContext.User.Claims
+            .Where(x => x.Type == ClaimTypes.NameIdentifier)
+            .FirstOrDefault()?.Value);
     }
 }

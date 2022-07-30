@@ -48,4 +48,16 @@ public class MeetupRepository : IMeetupRepository
     {
         return _context.Meetups.AsQueryable();
     }
+
+    public async Task<bool> UpdateMeetup(Meetup meetup)
+    {
+        _context.Meetups.Update(meetup);
+        return (await _context.SaveChangesAsync()) > 0;
+    }
+
+    public async Task<bool> DeleteMeetup(int meetupId)
+    {
+        _context.Meetups.Remove( await GetMeetupById(meetupId));
+        return (await _context.SaveChangesAsync()) > 0;
+    }
 }
