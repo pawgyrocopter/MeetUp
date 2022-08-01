@@ -22,6 +22,11 @@ public class AccountController : BaseApiController
         _context = context;
     }
     
+    /// <summary>
+    /// Sign up as new user
+    /// </summary>
+    /// <param name="registerDto"></param>
+    /// <returns></returns>
     [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
     {
@@ -39,7 +44,11 @@ public class AccountController : BaseApiController
             Token = await _tokenService.CreateToken(user)
         };
     }
-
+    /// <summary>
+    /// Sing in as already existed user
+    /// </summary>
+    /// <param name="loginDto"></param>
+    /// <returns></returns>
     [HttpPost("login")]
     public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
     {

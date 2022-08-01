@@ -18,6 +18,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace MeetupAPI.Controllers;
 
+[Route("/api/Meetups")]
 public class MeetupController : BaseApiController
 {
     private readonly ApplicationDbContext _context;
@@ -31,20 +32,30 @@ public class MeetupController : BaseApiController
         _meetupService = meetupService;
     }
 
+    /// <summary>
+    /// Return all meetups
+    /// </summary>
+    /// <param name="OrderBy">Take it easy</param>
     [HttpGet]
     public async Task<IEnumerable<MeetupDTO>> GetAllMeetups([FromQuery]MeetupsFilterParams meetupsFilterParams) //sort by name, date,
     {
         //return _context.Meetups.Include(x => x.UsersRegistred).ProjectTo<MeetupDTO>(_mapper.ConfigurationProvider);
         return await _meetupService.GetMeetups(meetupsFilterParams);
     }
-    
-    [HttpGet("{id}")]
-    public async Task<ActionResult<MeetupDTO>> GetMeetupById(int id)
+    /// <summary>
+    /// Returns meetup by id
+    /// </summary>
+    /// <param name="meetupId">Id of existing meetup</param>
+    /// <returns></returns>
+    /// <response code="200">Successfully returned meetup</response>
+    /// <response code="204">No such a meetup</response>
+    [HttpGet("{meetupId}")]
+    public async Task<ActionResult<MeetupDTO>> GetMeetupById(int meetupId)
     {
         MeetupDTO meetup;
         try
         {
-            meetup = await _meetupService.GetMeetupById(id);
+            meetup = await _meetupService.GetMeetupById(meetupId);
         }
         catch
         {
@@ -53,6 +64,23 @@ public class MeetupController : BaseApiController
         return meetup;
     }
 
+    /// <summary>
+    /// Creates meetup
+    /// </summary>
+    /// <param name="meetupRegistrationDto.OrderBy">qweqwe</param>
+    /// <remarks>
+    ///     Sample Request:
+    ///
+    ///         POST /api/Meetup
+    ///         {
+    ///               "name": "test",
+    ///               "plannedTime": "12/12/2022",
+    ///               "description": "some test",
+    ///               "keywords": "qwe qwe test qwe",
+    ///               "place": "Belarus"
+    ///         }
+    ///     
+    /// </remarks>
     [Authorize]
     [HttpPost]
     public async Task<MeetupDTO> CreateMeetup([FromBody] MeetupRegistrationDto meetupRegistrationDto)
@@ -60,6 +88,13 @@ public class MeetupController : BaseApiController
         return await _meetupService.CreateMeetup(meetupRegistrationDto, GetUserId());
     }
 
+    /// <summary>
+    /// Register user for the meetup
+    /// </summary>
+    /// <param name="meetupId">Id of existing meetup</param>
+    /// <response code="200">Successfully registered for the meetup</response>
+    /// <response code="400">Incorrect id</response>
+    /// <response code="401">Unauthorized access</response>
     [Authorize]
     [HttpPost("{meetupId}/register", Name = "register")]
     public async Task<ActionResult> RegisterForMeetup(int meetupId)
@@ -76,6 +111,28 @@ public class MeetupController : BaseApiController
         return Ok("Successfully registered to a meetup");
     }
 
+    /// <summary>
+    /// Updates existing meetup
+    /// </summary>
+    /// <param name="meetupId">Id of existing meetup</param>
+    /// <param name="meetupRegistrationDto"></param>
+    /// <remarks>
+    ///     Sample Request:
+    ///
+    ///         PUT /api/Meetup/{meetupId : int}
+    ///         {
+    ///               "name": "test",
+    ///               "plannedTime": "12/12/2022",
+    ///               "description": "some test",
+    ///               "keywords": "qwe qwe test qwe",
+    ///               "place": "Belarus"
+    ///         }
+    ///     
+    /// </remarks>
+    /// <returns></returns>
+    /// <response code="200">Successfully updated the meetup</response>
+    /// <response code="400">Incorrect id</response>
+    /// <response code="401">Unauthorized access</response>
     [Authorize]
     [HttpPut("{meetupId}")]
     public async Task<ActionResult<MeetupDTO>> UpdateMeetup(int meetupId,[FromBody]MeetupRegistrationDto meetupRegistrationDto)
@@ -97,6 +154,14 @@ public class MeetupController : BaseApiController
         return meetupDto;
     }
 
+    /// <summary>
+    /// Deletes existing meetup
+    /// </summary>
+    /// <param name="meetupId">Id of existing meetup</param>
+    /// <returns></returns>
+    /// <response code="200">Successfully deleted the meetup</response>
+    /// <response code="400">Incorrect id</response>
+    /// <response code="401">Unauthorized access</response>
     [Authorize]
     [HttpDelete("{meetupId}")]
     public async Task<ActionResult> DeleteMeetup(int meetupId)
