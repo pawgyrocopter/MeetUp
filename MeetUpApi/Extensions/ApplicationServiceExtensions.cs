@@ -1,4 +1,5 @@
-﻿using MeetupAPI.Data;
+﻿using System.Runtime.CompilerServices;
+using MeetupAPI.Data;
 using MeetupAPI.Helpers;
 using MeetupAPI.Interfaces;
 using MeetupAPI.Services;
@@ -13,11 +14,8 @@ public static class ApplicationServiceExtensions
     public static IServiceCollection AddApplicationServices(this IServiceCollection services,
         IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
-        services.AddDbContext<ApplicationDbContext>(options =>
-        {
-            options.UseSqlite(connectionString);
-        });
+        var connStr = configuration.GetConnectionString("DefaultConnection");
+        services.AddDbContext<ApplicationDbContext>(options => { options.UseNpgsql(connStr); });
         services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IMeetupRepository, MeetupRepository>();
