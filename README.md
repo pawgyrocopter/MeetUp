@@ -1,6 +1,6 @@
 ﻿## To run this application:
 
-1. configure user and password in *appsettings.Development.json*
+1. configure user and password to access PostgreSql database  in *appsettings.Development.json*
 2. run ```dotnet ef database drop``` 
 3. ```dotnet ef migrations add migrationName```
 4. ```dotnet ef database update```
