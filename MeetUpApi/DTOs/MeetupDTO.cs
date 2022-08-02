@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MeetupAPI.DTOs;
+﻿namespace MeetupAPI.DTOs;
 
 public class MeetupDTO
 {

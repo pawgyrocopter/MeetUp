@@ -1,14 +1,11 @@
-﻿using System.Diagnostics;
-using API.Helpers;
+﻿using API.Helpers;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MeetupAPI.Data;
 using MeetupAPI.DTOs;
 using MeetupAPI.Entities;
 using MeetupAPI.Helpers;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using SQLitePCL;
 
 namespace MeetupAPI.Services;
 

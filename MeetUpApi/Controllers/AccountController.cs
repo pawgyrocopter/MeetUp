@@ -1,14 +1,9 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using MeetupAPI.Data;
-using MeetupAPI.DTOs;
+﻿using MeetupAPI.DTOs;
 using MeetupAPI.Entities;
 using MeetupAPI.Interfaces;
 using MeetupAPI.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SQLitePCL;
+
 
 namespace MeetupAPI.Controllers;
 

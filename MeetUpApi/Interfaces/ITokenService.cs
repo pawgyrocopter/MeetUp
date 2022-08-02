@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using MeetupAPI.Entities;
+﻿using MeetupAPI.Entities;
 
 namespace MeetupAPI.Interfaces;
 

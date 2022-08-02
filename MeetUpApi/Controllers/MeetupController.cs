@@ -1,20 +1,12 @@
-﻿
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using MeetupAPI.Data;
 using MeetupAPI.DTOs;
-using MeetupAPI.Entities;
 using MeetupAPI.Helpers;
 using MeetupAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace MeetupAPI.Controllers;
 

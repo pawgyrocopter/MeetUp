@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MeetupAPI.Entities;
+﻿namespace MeetupAPI.Entities;
 
 public class Meetup
 {

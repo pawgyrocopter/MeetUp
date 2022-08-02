@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MeetupAPI.DTOs;
-using MeetupAPI.Entities;
+﻿using MeetupAPI.Entities;
 
 namespace MeetupAPI.Data;
 

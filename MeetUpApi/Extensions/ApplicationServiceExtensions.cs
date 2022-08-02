@@ -1,11 +1,8 @@
-﻿using System.Runtime.CompilerServices;
-using MeetupAPI.Data;
+﻿using MeetupAPI.Data;
 using MeetupAPI.Helpers;
 using MeetupAPI.Interfaces;
 using MeetupAPI.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace MeetupAPI.Extensions;
 

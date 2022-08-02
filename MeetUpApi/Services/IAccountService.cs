@@ -1,5 +1,4 @@
 ﻿using MeetupAPI.DTOs;
-using MeetupAPI.Entities;
 
 namespace MeetupAPI.Services;
 

@@ -1,5 +1,4 @@
-﻿using System;
-using API.Helpers;
+﻿using API.Helpers;
 
 namespace MeetupAPI.Helpers;
 
