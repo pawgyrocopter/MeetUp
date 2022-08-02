@@ -21,6 +21,7 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IMeetupRepository, MeetupRepository>();
         services.AddScoped<IMeetupService, MeetupService>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IAccountService, AccountService>();
         return services;
     }
 }
