@@ -39,7 +39,6 @@ public class MeetupController : BaseApiController
     [HttpGet]
     public async Task<IEnumerable<MeetupDTO>> GetAllMeetups([FromQuery]MeetupsFilterParams meetupsFilterParams) //sort by name, date,
     {
-        //return _context.Meetups.Include(x => x.UsersRegistred).ProjectTo<MeetupDTO>(_mapper.ConfigurationProvider);
         return await _meetupService.GetMeetups(meetupsFilterParams);
     }
     /// <summary>

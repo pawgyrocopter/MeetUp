@@ -4,6 +4,7 @@ using MeetupAPI.Data;
 using MeetupAPI.DTOs;
 using MeetupAPI.Entities;
 using MeetupAPI.Interfaces;
+using MeetupAPI.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,12 +15,12 @@ namespace MeetupAPI.Controllers;
 public class AccountController : BaseApiController
 {
     private readonly ITokenService _tokenService;
-    private readonly ApplicationDbContext _context;
+    private readonly IAccountService _accountService;
 
-    public AccountController(ITokenService tokenService, ApplicationDbContext context)
+    public AccountController(ITokenService tokenService,IAccountService accountService)
     {
         _tokenService = tokenService;
-        _context = context;
+        _accountService = accountService;
     }
     
     /// <summary>
@@ -30,19 +31,20 @@ public class AccountController : BaseApiController
     [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
     {
+        if (await _accountService.IfUserExists(registerDto.UserName))
+        {
+            return BadRequest("User already exists");
+        }
+        
         var user = new User()
         {
             UserName = registerDto.UserName,
-            Password = registerDto.Password
+            Password = registerDto.Password,
+            FirstName = registerDto.FirstName,
+            LastName = registerDto.LastName
         };
 
-        await _context.Users.AddAsync(user);
-        await _context.SaveChangesAsync();
-        return new UserDto()
-        {
-            UserName = user.UserName,
-            Token = await _tokenService.CreateToken(user)
-        };
+        return await _accountService.RegisterUser(registerDto);
     }
     /// <summary>
     /// Sing in as already existed user
@@ -52,12 +54,16 @@ public class AccountController : BaseApiController
     [HttpPost("login")]
     public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
     {
-        var user = _context.Users.FirstOrDefault(x => x.UserName.Equals(loginDto.UserName));
-        if (!user.Password.Equals(loginDto.Password)) return Unauthorized();
-        return new UserDto()
+        UserDto userDto;
+        try
         {
-            UserName = user.UserName,
-            Token = await _tokenService.CreateToken(user),
-        };
+            userDto = await _accountService.Login(loginDto);
+        }
+        catch
+        {
+            return BadRequest("Not correct password");
+        }
+        return userDto;
+
     }
 }

@@ -1,4 +1,5 @@
 using System.Reflection;
+using MeetupAPI.Data;
 using MeetupAPI.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,6 +50,8 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddIdentityServices(builder.Configuration);
 
 var app = builder.Build();
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
